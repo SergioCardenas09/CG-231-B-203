@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Objetos Geometry en THREE.js</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			//Escena y camara
+
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+
+			//crea render y lo pone en el documento
+
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+			//Luz apunta desde el frente
+			var directionalLight = new THREE.DirectionalLight( 0xffffff, 2); 
+			//Agregamos luz en posicion z
+			directionalLight.position.set(1,1,10);
+			//agrega la luz a la escena
+            scene.add( directionalLight );
+
+			//Luz apunta desde Izquierda
+			var directionalLight = new THREE.DirectionalLight( 0xffffff, 2); 
+			//Agregamos luz posicion -x
+			directionalLight.position.set(-20,1,1);
+			//agrega la luz a la escena
+            scene.add( directionalLight );
+
+
+			//Creamos arreglo tamaño
+
+			var tamanoObj=[[1,1,1], [0.5,0.5,0.5], [0.5,6,20]];
+			var geometria=[];
+
+
+			//agregamos los valores a las geometrias con push
+
+			geometria.push(new THREE.BoxGeometry(tamanoObj[0][0]));
+            geometria.push(new THREE.SphereGeometry(tamanoObj[1][0]));
+            geometria.push(new THREE.ConeGeometry(tamanoObj[2][0]));
+
+			//Arreglo de colores y de materiales
+
+			var color = [{color:0xE84723}, {color:0xDC8217}, {color:0x9C0C80}];
+
+            var material=[new THREE.MeshNormalMaterial(color[0]),new THREE.MeshLambertMaterial(color[1]),new THREE.MeshPhysicalMaterial(color[2])];
+
+			//tipos de materiales sacados de la web de Threejs
+
+			//https://threejs.org/docs/#api/en/materials/MeshNormalMaterial
+			//https://threejs.org/docs/#api/en/materials/MeshLambertMaterial
+			//https://threejs.org/docs/#api/en/materials/MeshPhysicalMaterial
+
+			//Arreglos de figuras
+
+			var ArregloFiguras =[];
+            for (let i=0; i<3; i++) {
+				//crea todas las figuras
+                ArregloFiguras.push(new THREE.Mesh(geometria[i], material[i]));
+            }
+
+            for (let i=0; i<3; i++) {
+                scene.add( ArregloFiguras[i] ); 
+            }
+
+            ArregloFiguras[0].position.x = -4; 
+            ArregloFiguras[0].position.y = 0;
+            ArregloFiguras[0].position.z = 0;
+
+            ArregloFiguras[1].position.x = 0;
+            ArregloFiguras[1].position.y = 0;
+            ArregloFiguras[1].position.z = 0;
+
+            ArregloFiguras[2].position.x = 4;
+            ArregloFiguras[2].position.y = 0;
+            ArregloFiguras[2].position.z = 0;
+            
+
+            camera.position.x = 0;//derecha(+), izquierda(-)  ↓
+            camera.position.y = 0;//arriba(+), abajo(-)     → posicion camara
+            camera.position.z = 10;//atras(+), adelante(-)     ↑
+
+
+			function animate() { //animacion del cubo
+				requestAnimationFrame( animate );
+
+				ArregloFiguras[0].rotation.x += 0.02;
+				ArregloFiguras[0].rotation.y += 0.02;
+
+                ArregloFiguras[1].rotation.x += 0.02;
+				ArregloFiguras[1].rotation.y += 0.02;
+
+                ArregloFiguras[2].rotation.x += 0.02;
+				ArregloFiguras[2].rotation.y += 0.02;
+
+				renderer.render( scene, camera);
+			}
+
+			animate();
+		</script>
+	</body>
+</html>
