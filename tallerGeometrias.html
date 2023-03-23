@@ -9,7 +9,9 @@
 	</head>
 	<body>
 		<script type="module">
+
 			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+            import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
 
 			//Escena y camara
 
@@ -94,6 +96,7 @@
             camera.position.y = 0;//arriba(+), abajo(-)     → posicion camara
             camera.position.z = 10;//atras(+), adelante(-)     ↑
 
+			var controls = new OrbitControls(camera, renderer.domElement);
 
 			function animate() { //animacion del cubo
 				requestAnimationFrame( animate );
